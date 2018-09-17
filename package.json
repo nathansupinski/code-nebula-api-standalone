@@ -1,0 +1,39 @@
+{
+  "name": "codenebula-api",
+  "version": "1.0.0",
+  "description": "NodeJS backend api",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "babel-watch server.js",
+	"clean": "rm -rf build && mkdir build",
+	"build-server": "babel ./src -s --ignore spec.js,test.js -d ./build && cp ./package.json ./build",
+	"build": "npm run clean && npm run build-server",
+	"start": "node ./build/index.js",
+	"start-debug": "node --debug ./build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathansupinski/codenebula-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nathansupinski/codenebula-api/issues"
+  },
+  "homepage": "https://github.com/nathansupinski/codenebula-api#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "mongoose": "^5.2.15",
+	"cors": "^2.8.4",
+	"body-parser": "^1.18.3"
+  },
+  "devDependencies": {
+    "babel-watch": "^2.0.7",
+	"babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+	"mocha": "^3.0.0"
+  }
+}
