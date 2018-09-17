@@ -13,7 +13,8 @@ connection.once('open', () => {
     console.log('MongoDB database connection established successfully!');
 });
 router.route('/api/test').get((req, res) => {
-    res.status(200).json({'api': 'Online with CI and CD'});
+	//extra comment to trigger CI and CD test
+    res.status(200).json({'api': 'Online with CI and CD!'});
 });
 router.route('/issues/add').post((req, res) => {
     let issue = new Issue(req.body);
