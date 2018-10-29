@@ -35,7 +35,11 @@ async function getById(id) {
 }
 
 async function create(userParam) {
-    debugger;
+    //debugger;
+    if(!userParam.regCode || userParam.regCode !== config.registrationCode){
+        throw 'Invalid reg code';
+    }
+
     // validate
     if (await User.findOne({ username: userParam.username })) {
         throw 'Username "' + userParam.username + '" is already taken';
