@@ -5,6 +5,7 @@ deployPath=/opt/
 echo "Using agent working directory: $1"
 sudo rm -r "$deployPath/codenebula-backend"
 sudo cp -r -v "$1/codenebulaBackend" "$deployPath/codenebula-backend"
+sudo cp -v "/home/vellith/codenebula-backend-config/config.json" "$deployPath/codenebula-backend"
 cd '/opt/codenebula-backend'
 #set env var for production and install dependencies
 sudo NODE_ENV=production npm install 
