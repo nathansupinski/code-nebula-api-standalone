@@ -31,7 +31,9 @@
     "rootpath": "^0.1.2",
     "express-jwt": "^5.3.1",
     "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^8.3.0"
+    "jsonwebtoken": "^8.3.0",
+    "babel-core": "^6.0.20",
+    "babel-polyfill": "^6.0.16"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
