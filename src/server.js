@@ -1,72 +1,27 @@
-import express from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
-import Issue from './models/Issue';
+require('rootpath')();
+const express = require('express');
 const app = express();
-const router = express.Router();
-app.use(cors());
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const jwt = require('src/_helpers/jwt');
+const errorHandler = require('src/_helpers/error-handler');
+
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-mongoose.connect('mongodb://localhost/codenebula-core');
-const connection = mongoose.connection;
-connection.once('open', () => {
-    console.log('MongoDB database connection established successfully!');
+app.use(cors());
+
+// use JWT auth to secure the api
+app.use(jwt());
+
+// api routes
+app.use('/users', require('./users/users.controller'));
+
+// global error handler
+app.use(errorHandler);
+
+// start server
+const port = process.env.NODE_ENV === 'production' ? 3000 : 3000;
+const server = app.listen(port, function () {
+    debugger;
+    console.log('Server listening on port ' + port);
 });
-router.route('/api/test').get((req, res) => {
-	//extra comment to trigger CI and CD test
-    res.status(200).json({'api': 'Online with CI and CD!'});
-});
-router.route('/issues/add').post((req, res) => {
-    let issue = new Issue(req.body);
-    issue.save()
-        .then(issue => {
-            res.status(200).json({'issue': 'Added successfully'});
-        })
-        .catch(err => {
-            res.status(400).send('Failed to create new record');
-        });
-});
-router.route('/api/issues').get((req, res) => {
-    Issue.find((err, issues) => {
-        if (err)
-            console.log(err);
-        else
-            res.json(issues);
-    });
-});
-router.route('/issues/:id').get((req, res) => {
-    Issue.findById(req.params.id, (err, issue) => {
-        if (err)
-            console.log(err);
-        else
-            res.json(issue);
-    })
-});
-router.route('/issues/update/:id').post((req, res) => {
-    Issue.findById(req.params.id, (err, issue) => {
-        if (!issue)
-            return next(new Error('Could not load Document'));
-        else {
-            issue.title = req.body.title;
-            issue.responsible = req.body.responsible;
-            issue.description = req.body.description;
-            issue.severity = req.body.severity;
-            issue.status = req.body.status;
-            issue.save().then(issue => {
-                res.json('Update done');
-            }).catch(err => {
-                res.status(400).send('Update failed');
-            });
-        }
-    });
-});
-router.route('/issues/delete/:id').get((req, res) => {
-    Issue.findByIdAndRemove({_id: req.params.id}, (err, issue) => {
-        if (err)
-            res.json(err);
-        else
-            res.json('Removed successfully');
-    });
-});
-app.use('/', router);
-app.listen(3000, () => console.log(`Express server running on port 3000`));

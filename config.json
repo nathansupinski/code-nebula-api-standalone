@@ -1,0 +1,4 @@
+{
+  "connectionString": "mongodb://localhost/codenebula-core",
+  "secret": "THIS IS my secret its not really that great but wombocombo those nerds oof"
+}
